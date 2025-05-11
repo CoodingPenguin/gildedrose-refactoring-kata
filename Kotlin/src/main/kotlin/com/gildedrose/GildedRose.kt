@@ -11,62 +11,64 @@ class GildedRose(var items: List<Item>) {
 
     fun updateQuality() {
         items.forEach { item ->
-            if (item.name != AGED_BRIE && item.name != BACKSTAGE) {
-                if (item.quality > 0) {
-                    if (item.name != SULFURAS) {
-                        item.decreaseQuality()
-                    }
-                }
-            } else {
-                if (item.quality < 50) {
-                    item.increaseQuality()
+            when (item.name) {
+                AGED_BRIE -> {
+                    if (item.quality < 50) {
+                        item.increaseQuality(1)
 
-                    if (item.name == BACKSTAGE) {
+                    }
+                    item.decreaseSellIn()
+                }
+
+                BACKSTAGE -> {
+                    if (item.quality < 50) {
                         if (item.sellIn < 11) {
-                            if (item.quality < 50) {
-                                item.increaseQuality()
-                            }
+                            item.increaseQuality(2)
                         }
 
-                        if (item.sellIn < 6) {
-                            if (item.quality < 50) {
-                                item.increaseQuality()
-                            }
+                        if (item.sellIn < 6 && item.quality < 50) {
+                            item.increaseQuality(3)
                         }
                     }
-                }
-            }
+                    item.decreaseSellIn()
 
-            if (item.name != SULFURAS) {
-                item.decreaseSellIn()
+                }
+
+                SULFURAS -> {
+
+                }
+
+                else -> {
+                    if (item.quality > 0) {
+                        item.decreaseQuality(1)
+                    }
+                    item.decreaseSellIn()
+
+                }
             }
 
             if (item.sellIn < 0) {
                 if (item.name != AGED_BRIE) {
                     if (item.name != BACKSTAGE) {
-                        if (item.quality > 0) {
-                            if (item.name != SULFURAS) {
-                                item.decreaseQuality()
-                            }
+                        if (item.quality > 0 && item.name != SULFURAS) {
+                            item.decreaseQuality(1)
                         }
                     } else {
-                        item.quality = item.quality - item.quality
+                        item.quality = 0
                     }
-                } else {
-                    if (item.quality < 50) {
-                        item.increaseQuality()
-                    }
+                } else if (item.quality < 50) {
+                    item.increaseQuality(1)
                 }
             }
         }
     }
 
-    private fun Item.decreaseQuality() {
-        this.quality -= 1
+    private fun Item.decreaseQuality(qualityAmount: Int) {
+        this.quality -= qualityAmount
     }
 
-    private fun Item.increaseQuality() {
-        this.quality += 1
+    private fun Item.increaseQuality(qualityAmount: Int) {
+        this.quality += qualityAmount
     }
 
     private fun Item.decreaseSellIn() {
