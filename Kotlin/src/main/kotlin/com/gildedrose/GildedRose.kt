@@ -1,12 +1,19 @@
 package com.gildedrose
 
+
 class GildedRose(var items: List<Item>) {
+
+    companion object {
+        const val AGED_BRIE = "Aged Brie"
+        const val BACKSTAGE = "Backstage passes to a TAFKAL80ETC concert"
+        const val SULFURAS = "Sulfuras, Hand of Ragnaros"
+    }
 
     fun updateQuality() {
         items.forEach { item ->
-            if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert") {
+            if (item.name != AGED_BRIE && item.name != BACKSTAGE) {
                 if (item.quality > 0) {
-                    if (item.name != "Sulfuras, Hand of Ragnaros") {
+                    if (item.name != SULFURAS) {
                         item.decreaseQuality()
                     }
                 }
@@ -14,7 +21,7 @@ class GildedRose(var items: List<Item>) {
                 if (item.quality < 50) {
                     item.increaseQuality()
 
-                    if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
+                    if (item.name == BACKSTAGE) {
                         if (item.sellIn < 11) {
                             if (item.quality < 50) {
                                 item.increaseQuality()
@@ -30,15 +37,15 @@ class GildedRose(var items: List<Item>) {
                 }
             }
 
-            if (item.name != "Sulfuras, Hand of Ragnaros") {
+            if (item.name != SULFURAS) {
                 item.decreaseSellIn()
             }
 
             if (item.sellIn < 0) {
-                if (item.name != "Aged Brie") {
-                    if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
+                if (item.name != AGED_BRIE) {
+                    if (item.name != BACKSTAGE) {
                         if (item.quality > 0) {
-                            if (item.name != "Sulfuras, Hand of Ragnaros") {
+                            if (item.name != SULFURAS) {
                                 item.decreaseQuality()
                             }
                         }
